@@ -24,7 +24,7 @@ export default class NotePageMain extends React.Component {
       <section className='NotePageMain'>
         <Note
           id={note.id}
-          note_name={note.note_name}
+          note_name={note.name}
           date_modified={note.date_modified}
           content={note.content}
           onDeleteNote={this.handleDeleteNote}

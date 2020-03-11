@@ -1,14 +1,15 @@
-export const findFolder = (folders=[], folderid) =>
-  folders.find(folder => folder.folderid === folderid)
 
-export const findNote = (notes=[], noteid) =>
-  notes.find(note => note.noteid+''=== noteid)
+export const findFolder = (folders=[], folderId) =>
+  folders.find(folder => folder.id === Number(folderId))
 
-export const getNotesForFolder = (notes=[], folderid) => (
-  (!folderid)
+export const findNote = (notes=[], noteId) =>
+  notes.find(note => note.id === Number(noteId))
+
+export const getNotesForFolder = (notes=[], folderId) => (
+  (!folderId)
     ? notes
-    : notes.filter(note => note.folder_id === folderId)
+    : notes.filter(note => note.folder_id === Number(folderId))
 )
 
-export const countNotesForFolder = (notes=[], folderid) =>
-  notes.filter(note => note.folderid === folderid).length
+export const countNotesForFolder = (notes=[], folderId) =>
+  notes.filter(note => note.folder_id === Number(folderId)).length

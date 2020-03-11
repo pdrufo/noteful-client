@@ -5,16 +5,16 @@ import NoteListNav from '../NoteListNav/NoteListNav'
 import NotePageNav from '../NotePageNav/NotePageNav'
 import NoteListMain from '../NoteListMain/NoteListMain'
 import NotePageMain from '../NotePageMain/NotePageMain'
-import AddFolder from '../AddFolder/AddFolder'
 import AddNote from '../AddNote/AddNote'
-import ApiContext from '../ApiContext'
+import AddFolder from '../AddFolder/AddFolder'
 import config from '../config'
-import './App.css'
+import './App.css' 
+import ApiContext from '../ApiContext'
 
 class App extends Component {
   state = {
     notes: [],
-    folders: [],
+    folders: []
   };
 
   componentDidMount() {
@@ -23,22 +23,18 @@ class App extends Component {
       fetch(`${config.API_ENDPOINT}/folders`)
     ])
       .then(([notesRes, foldersRes]) => {
-        if (!notesRes.ok)
-          return notesRes.json().then(e => Promise.reject(e))
-        if (!foldersRes.ok)
-          return foldersRes.json().then(e => Promise.reject(e))
-
-        return Promise.all([
-          notesRes.json(),
-          foldersRes.json(),
-        ])
-      })
-      .then(([notes, folders]) => {
-        this.setState({ notes, folders })
-      })
-      .catch(error => {
-        console.error({ error })
-      })
+          if (!notesRes.ok)
+              return notesRes.json().then(e => Promise.reject(e));
+          if (!foldersRes.ok)
+              return foldersRes.json().then(e => Promise.reject(e));
+          return Promise.all([notesRes.json(), foldersRes.json()]);
+        })
+        .then(([notes, folders]) => {
+            this.setState({notes, folders});
+        })
+        .catch(error => {
+            console.error({error});
+        });
   }
 
   handleAddFolder = folder => {
@@ -61,7 +57,7 @@ class App extends Component {
 
   handleDeleteNote = noteId => {
     this.setState({
-      notes: this.state.notes.filter(note => note.noteid !== noteId)
+      notes: this.state.notes.filter(note => note.id !== noteId)
     })
   }
 
@@ -77,7 +73,7 @@ class App extends Component {
           />
         )}
         <Route
-          path='/notes/:noteid'
+          path='/notes/:noteId'
           component={NotePageNav}
         />
         <Route
@@ -104,7 +100,7 @@ class App extends Component {
           />
         )}
         <Route
-          path='/notes/:noteid'
+          path='/notes/:noteId'
           component={NotePageMain}
         />
         <Route
@@ -123,9 +119,9 @@ class App extends Component {
     const value = {
       notes: this.state.notes,
       folders: this.state.folders,
-      addFolder: this.handleAddFolder,
-      addNote: this.handleAddNote,
       deleteNote: this.handleDeleteNote,
+      addNote: this.handleAddNote,
+      addFolder: this.handleAddFolder
     }
     return (
       <ApiContext.Provider value={value}>

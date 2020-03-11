@@ -15,27 +15,31 @@ export default class AddFolder extends Component {
   handleSubmit = e => {
     e.preventDefault()
     const folder = {
-      folder_name: e.target['folder-name'].value
+      title: e.target['folder-name'].value
     }
-    fetch(`${config.API_ENDPOINT}/folders`, {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json'
-      },
-      body: JSON.stringify(folder),
-    })
-      .then(res => {
-        if (!res.ok)
-          return res.json().then(e => Promise.reject(e))
-        return res.json()
+    if (!folder.title) {
+      alert('Title field is required')
+    } else {
+      fetch(`${config.API_ENDPOINT}/folders`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify(folder),
       })
-      .then(folder => {
-        this.context.addFolder(folder)
-        this.props.history.push(`/folders/${folder.folderId}`)
-      })
-      .catch(error => {
-        console.error({ error })
-      })
+        .then(res => {
+          if (!res.ok)
+            return res.json().then(e => Promise.reject(e))
+          return res.json()
+        })
+        .then(folder => {
+          this.context.addFolder(folder)
+          this.props.history.push(`/folders/${folder.id}`)
+        })
+        .catch(error => {
+          console.error({ error })
+        })
+    }
   }
 
   render() {

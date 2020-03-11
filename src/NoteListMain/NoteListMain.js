@@ -8,7 +8,6 @@ import { getNotesForFolder } from '../notes-helpers'
 import './NoteListMain.css'
 
 export default class NoteListMain extends React.Component {
-
   static defaultProps = {
     match: {
       params: {}
@@ -19,9 +18,7 @@ export default class NoteListMain extends React.Component {
   render() {
     const { folderId } = this.props.match.params
     const { notes=[] } = this.context
-    
-    const notesForFolder = getNotesForFolder(notes, parseInt(folderId))
-    
+    const notesForFolder = getNotesForFolder(notes, folderId)
     return (
       <section className='NoteListMain'>
         <ul>
@@ -29,9 +26,8 @@ export default class NoteListMain extends React.Component {
             <li key={note.id}>
               <Note
                 id={note.id}
-                note_name={note.name}
-                date_modified={note.date_modified}
-
+                title={note.title}
+                date_created={note.date_created}
               />
             </li>
           )}
@@ -50,5 +46,5 @@ export default class NoteListMain extends React.Component {
         </div>
       </section>
     )
-  }
-}
+   }
+ }

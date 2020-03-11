@@ -3,7 +3,7 @@ import { shallow } from 'enzyme'
 import toJson from 'enzyme-to-json'
 import Note from './Note'
 
-describe.skip(`Note component`, () => {
+describe(`Note component`, () => {
   const props = {
     id: 'a',
     name: 'test-class-name',

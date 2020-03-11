@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 import { format } from 'date-fns'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -6,7 +6,7 @@ import ApiContext from '../ApiContext'
 import config from '../config'
 import './Note.css'
 
-export default class Note extends React.Component {
+export default class Note extends Component {
   static defaultProps ={
     onDeleteNote: () => {},
   }
@@ -14,53 +14,42 @@ export default class Note extends React.Component {
 
   handleClickDelete = e => {
     e.preventDefault()
-    const noteid = this.props.id
+    const noteId = this.props.id
 
-    fetch(`${config.API_ENDPOINT}/notes/${noteid}`, {
+    fetch(`${config.API_ENDPOINT}/notes/${noteId}`, {
       method: 'DELETE',
       headers: {
         'content-type': 'application/json'
       },
     })
-      .then(res => {
-        if (!res.ok)
-          return res.json().then(e => Promise.reject(e))
-        return res.json()
-      })
       .then(() => {
-        this.context.deleteNote(noteid)
-        // allow parent to perform extra behaviour
-        this.props.onDeleteNote(noteid)
+        this.context.deleteNote(noteId)
+        this.props.onDeleteNote(noteId)
       })
       .catch(error => {
-        console.error({ error })
+        console.error({error})
       })
   }
-
+  
   render() {
-    const { note_name, note_id, date_modified } = this.props
     return (
       <div className='Note'>
         <h2 className='Note__title'>
-          <Link to={`/notes/${note_id}`}>
-            {note_name}
+          <Link to={`/notes/${this.props.id}`}>
+            {this.props.title}
           </Link>
         </h2>
-        <button
-          className='Note__delete'
-          type='button'
-          onClick={this.handleClickDelete}
-        >
+        <button onClick={this.handleClickDelete} className='Note__delete' type='button'>
           <FontAwesomeIcon icon='trash-alt' />
           {' '}
           remove
         </button>
         <div className='Note__dates'>
           <div className='Note__dates-modified'>
-            Modified
+            Created
             {' '}
             <span className='Date'>
-              {format(date_modified, 'Do MMM YYYY')}
+              {format(this.props.date_created, 'Do MMM YYYY')}
             </span>
           </div>
         </div>
@@ -68,4 +57,3 @@ export default class Note extends React.Component {
     )
   }
 }
-  
